@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('forms', function (Blueprint $table) {
             $table->ulid('id')->primary();
             $table->string('name');
+            $table->text('description')->nullable();
+            $table->json('pages');
             $table->foreignUlid('project_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
         });

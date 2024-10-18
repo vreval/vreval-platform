@@ -20,14 +20,14 @@ class ProjectSelect extends Component implements HasForms
     use InteractsWithForms;
 
     public $project;
-    public UserSetting $userSetting;
+    public string $userSetting;
 
     public function mount(): void
     {
-        $this->userSetting = UserSetting::where('name', 'current_project')->firstOrFail();
+        $this->userSetting = UserSetting::currentProject();
 
         $this->form->fill([
-            'project' => $this->userSetting->value['id']
+            'project' => $this->userSetting
         ]);
     }
 
@@ -40,12 +40,12 @@ class ProjectSelect extends Component implements HasForms
     {
         return $form->schema([
             Select::make('project')
-                ->label('Change project')
+                ->label('Current project')
                 ->selectablePlaceholder(false)
                 ->options(Project::query()->pluck('name', 'projects.id'))
                 ->reactive()
                 ->afterStateUpdated(function ($set, $state) {
-                    $this->userSetting->setCurrentProject(Project::findOrFail($state));
+                    UserSetting::setCurrentProject(Project::findOrFail($state));
                     $this->dispatch('refresh-page');
                 })
         ]);

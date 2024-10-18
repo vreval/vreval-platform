@@ -15,7 +15,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class FormResource extends Resource
 {
-    protected static ?string $model = Form::class;
+    protected static ?string $model = VrevalForm::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -23,7 +23,54 @@ class FormResource extends Resource
     {
         return $form
             ->schema([
-                //
+                Forms\Components\TextInput::make('name')
+                    ->required(),
+                Forms\Components\Textarea::make('description'),
+                Forms\Components\Repeater::make('pages')
+                    ->schema([
+                        Forms\Components\Builder::make('fields')
+                            ->blocks([
+                                Forms\Components\Builder\Block::make('heading')
+                                    ->schema([Forms\Components\TextInput::make('text')]),
+                                Forms\Components\Builder\Block::make('text')
+                                    ->schema([Forms\Components\Textarea::make('text')]),
+                                Forms\Components\Builder\Block::make('rating')
+                                    ->schema([
+                                        Forms\Components\TextInput::make('question'),
+                                        Forms\Components\Toggle::make('is_required'),
+                                        Forms\Components\Select::make('size')
+                                            ->options([2,3,4,5,6,7]),
+                                        Forms\Components\Select::make('symbols')
+                                            ->options([
+                                                'none' => 'Don\'t show symbols',
+                                                'asc' => '1,2,3',
+                                                'desc' => '3,2,1',
+                                            ]),
+                                        Forms\Components\TextInput::make('label_a'),
+                                        Forms\Components\TextInput::make('label_b'),
+                                    ]),
+                                Forms\Components\Builder\Block::make('options')
+                                    ->schema([
+                                        Forms\Components\TextInput::make('question'),
+                                        Forms\Components\Toggle::make('is_required'),
+                                        Forms\Components\Toggle::make('is_shuffled'),
+                                        Forms\Components\Repeater::make('options')
+                                            ->schema([
+                                                Forms\Components\TextInput::make('option')
+                                            ])
+                                    ]),
+                                Forms\Components\Builder\Block::make('multiple_choice')
+                                    ->schema([
+                                        Forms\Components\TextInput::make('question'),
+                                        Forms\Components\Toggle::make('is_required'),
+                                        Forms\Components\Toggle::make('is_shuffled'),
+                                        Forms\Components\Repeater::make('options')
+                                            ->schema([
+                                                Forms\Components\TextInput::make('option')
+                                            ])
+                                    ]),
+                            ])
+                    ]),
             ]);
     }
 
@@ -31,7 +78,7 @@ class FormResource extends Resource
     {
         return $table
             ->columns([
-                //
+                Tables\Columns\TextColumn::make('name')
             ])
             ->filters([
                 //

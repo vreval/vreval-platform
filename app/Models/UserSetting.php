@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 
 class UserSetting extends Model
 {
@@ -18,7 +19,7 @@ class UserSetting extends Model
     protected static function booted(): void
     {
         static::addGlobalScope('authUserOnly', function (Builder $builder) {
-            $builder->where('user_id', Auth::user()->id);
+            $builder->where('user_id', Auth::id());
         });
     }
 
@@ -27,12 +28,22 @@ class UserSetting extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function setCurrentProject(Project $project)
+    public static function currentProject(): string
     {
-        $this->value = [
-            'id' => $project->id
-        ];
+        return Cache::remember('current_project', 600, function () {
+            return UserSetting::where('name', 'current_project')
+                ->firstOrFail()
+                ->value['id'];
+        });
+    }
 
-        $this->save();
+    public static function setCurrentProject(Project $project): void
+    {
+        UserSetting::updateOrCreate(
+            ['name' => 'current_project'],
+            ['value' => ['id' => $project->id]]
+        );
+
+        Cache::put('current_project', $project->id);
     }
 }
