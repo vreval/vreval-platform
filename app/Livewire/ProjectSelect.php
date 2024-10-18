@@ -42,10 +42,11 @@ class ProjectSelect extends Component implements HasForms
             Select::make('project')
                 ->label('Change project')
                 ->selectablePlaceholder(false)
-                ->options(Auth::user()->projects()->pluck('name', 'projects.id'))
+                ->options(Project::query()->pluck('name', 'projects.id'))
                 ->reactive()
                 ->afterStateUpdated(function ($set, $state) {
                     $this->userSetting->setCurrentProject(Project::findOrFail($state));
+                    $this->dispatch('refresh-page');
                 })
         ]);
     }

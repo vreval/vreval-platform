@@ -3,3 +3,9 @@
         {{ $this->form }}
     </form>
 </div>
+
+@script
+<script>
+    $wire.on('refresh-page', () => window.location.reload());
+</script>
+@endscript
