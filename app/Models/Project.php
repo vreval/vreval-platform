@@ -2,12 +2,31 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class Project extends Model
 {
     use HasUlids;
+
+    protected static function boot(): void
+    {
+        parent::boot();
+
+        self::created(function (Project $project) {
+            when(Auth::check(), function () use ($project) {
+                $project->users()->attach(Auth::user());
+            });
+        });
+
+        static::addGlobalScope('userProjectsOnly', function (Builder $builder) {
+            $builder->whereHas('users', function ($query) {
+                $query->where('users.id', Auth::id());
+            });
+        });
+    }
 
     public function users(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {

@@ -47,6 +47,27 @@ class User extends Authenticatable
         ];
     }
 
+    protected static function boot(): void
+    {
+        parent::boot();
+
+        self::created(function (User $user) {
+            $initialProject = $user->projects()->create([
+                'name' => $user->name . '\'s project'
+            ]);
+
+            $user->settings()->create([
+                'name' => 'current_project',
+                'value' => ['id' => $initialProject->id]
+            ]);
+        });
+    }
+
+    public function settings(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(UserSetting::class);
+    }
+
     public function projects(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
         return $this->belongsToMany(Project::class);
