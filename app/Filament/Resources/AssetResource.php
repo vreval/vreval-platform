@@ -7,6 +7,7 @@ use App\Filament\Resources\AssetResource\RelationManagers;
 use App\Models\Asset;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Forms\Get;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -22,8 +23,18 @@ class AssetResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
+            ->columns(1)
             ->schema([
-                //
+                Forms\Components\FileUpload::make('file')
+                    ->directory('assets')
+                    ->visibility('private')
+                    ->required(),
+                Forms\Components\Toggle::make('has_manifest')
+                    ->reactive(),
+                Forms\Components\FileUpload::make('manifest')
+                    ->directory('assets')
+                    ->visibility('private')
+                    ->hidden(fn (Get $get) => $get('has_manifest') === false)
             ]);
     }
 

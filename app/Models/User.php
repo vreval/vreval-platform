@@ -56,7 +56,10 @@ class User extends Authenticatable
                 'name' => $user->name . '\'s project'
             ]);
 
-            UserSetting::setCurrentProject($initialProject);
+            $user->settings()->create([
+                'name' => 'current_project',
+                'value' => ['id' => $initialProject->id]
+            ]);
         });
     }
 

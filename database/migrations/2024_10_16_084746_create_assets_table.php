@@ -13,7 +13,9 @@ return new class extends Migration
     {
         Schema::create('assets', function (Blueprint $table) {
             $table->ulid('id')->primary();
-            $table->string('name');
+            $table->boolean('has_manifest');
+            $table->string('file');
+            $table->string('manifest')->nullable();
             $table->foreignUlid('project_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
         });

@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('user_settings', function (Blueprint $table) {
             $table->ulid('id')->primary();
             $table->string('name');
-            $table->json('value');
+            $table->json('value')->nullable();
             $table->foreignUlid('user_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
