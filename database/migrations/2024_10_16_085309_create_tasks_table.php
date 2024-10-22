@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('tasks', function (Blueprint $table) {
             $table->ulid('id')->primary();
             $table->string('name');
+            $table->text('description')->nullable();
+            $table->json('properties');
             $table->foreignUlid('project_id')->constrained()->cascadeOnDelete();
-            $table->foreignUlid('marker_id')->constrained()->cascadeOnDelete();
-            $table->foreignUlid('form_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
     }
