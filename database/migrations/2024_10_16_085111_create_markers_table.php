@@ -14,8 +14,18 @@ return new class extends Migration
         Schema::create('markers', function (Blueprint $table) {
             $table->ulid('id')->primary();
             $table->string('name');
+            $table->text('description')->nullable();
+            $table->float('position_x');
+            $table->float('position_y');
+            $table->float('position_z');
+            $table->float('rotation_x');
+            $table->float('rotation_y');
+            $table->float('rotation_z');
+            $table->string('cad_id')->nullable();
+            $table->float('survey_point_x')->nullable();
+            $table->float('survey_point_y')->nullable();
+            $table->float('survey_point_z')->nullable();
             $table->foreignUlid('project_id')->constrained()->cascadeOnDelete();
-            $table->foreignUlid('environment_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
     }

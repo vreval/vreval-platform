@@ -12,6 +12,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use function Laravel\Prompts\select;
 
 class EnvironmentResource extends Resource
 {
@@ -23,7 +24,8 @@ class EnvironmentResource extends Resource
     {
         return $form
             ->schema([
-                //
+                Forms\Components\TextInput::make('name')
+                    ->required(),
             ]);
     }
 
@@ -31,7 +33,7 @@ class EnvironmentResource extends Resource
     {
         return $table
             ->columns([
-                //
+                Tables\Columns\TextColumn::make('name')
             ])
             ->filters([
                 //
@@ -49,7 +51,7 @@ class EnvironmentResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            RelationManagers\AssetsRelationManager::class
         ];
     }
 

@@ -9,6 +9,15 @@ class Marker extends Model
 {
     use HasUlids;
 
+    protected static function boot(): void
+    {
+        parent::boot();
+
+        self::creating(function (Marker $marker) {
+            $marker->project_id = UserSetting::currentProject();
+        });
+    }
+
     public function project(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(Project::class);

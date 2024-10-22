@@ -11,13 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('assets', function (Blueprint $table) {
-            $table->ulid('id')->primary();
-            $table->string('name');
-            $table->boolean('has_manifest');
-            $table->string('file');
-            $table->string('manifest')->nullable();
-            $table->foreignUlid('project_id')->constrained()->cascadeOnDelete();
+        Schema::create('environment_marker', function (Blueprint $table) {
+            $table->id();
+            $table->foreignUlid('environment_id')->constrained()->cascadeOnDelete();
+            $table->foreignUlid('marker_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
     }
@@ -27,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('assets');
+        Schema::dropIfExists('environment_marker');
     }
 };

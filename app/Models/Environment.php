@@ -9,18 +9,27 @@ class Environment extends Model
 {
     use HasUlids;
 
+    protected static function boot(): void
+    {
+        parent::boot();
+
+        self::creating(function (Environment $environment) {
+            $environment->project_id = UserSetting::currentProject();
+        });
+    }
+
     public function project(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(Project::class);
     }
 
-    public function assets(): \Illuminate\Database\Eloquent\Relations\HasMany
+    public function assets(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
-        return $this->hasMany(Asset::class);
+        return $this->belongsToMany(Asset::class);
     }
 
-    public function markers(): \Illuminate\Database\Eloquent\Relations\HasMany
+    public function markers(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
-        return $this->hasMany(Marker::class);
+        return $this->belongsToMany(Marker::class);
     }
 }

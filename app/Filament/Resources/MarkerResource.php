@@ -23,7 +23,49 @@ class MarkerResource extends Resource
     {
         return $form
             ->schema([
-                //
+                Forms\Components\TextInput::make('name')
+                    ->required(),
+                Forms\Components\Textarea::make('description'),
+                Forms\Components\Section::make('Placement')
+                    ->columns(['sm' => 3])
+                    ->schema([
+                        Forms\Components\TextInput::make('position_x')
+                            ->required()
+                            ->numeric(),
+                        Forms\Components\TextInput::make('position_y')
+                            ->required()
+                            ->numeric(),
+                        Forms\Components\TextInput::make('position_z')
+                            ->required()
+                            ->numeric(),
+                        Forms\Components\TextInput::make('rotation_x')
+                            ->required()
+                            ->numeric(),
+                        Forms\Components\TextInput::make('rotation_y')
+                            ->required()
+                            ->numeric(),
+                        Forms\Components\TextInput::make('rotation_z')
+                            ->required()
+                            ->numeric(),
+                    ]),
+                Forms\Components\Section::make('CAD meta data')
+                    ->description('This section shows computer generated meta data that comes from CAD software.')
+                    ->columns(['sm' => 3])
+                    ->schema([
+                        Forms\Components\TextInput::make('cad_id')
+                            ->label('CAD ID')
+                            ->disabled()
+                            ->columnSpan(3),
+                        Forms\Components\TextInput::make('survey_point_x')
+                            ->disabled()
+                            ->numeric(),
+                        Forms\Components\TextInput::make('survey_point_y')
+                            ->disabled()
+                            ->numeric(),
+                        Forms\Components\TextInput::make('survey_point_z')
+                            ->disabled()
+                            ->numeric(),
+                    ]),
             ]);
     }
 
@@ -31,7 +73,7 @@ class MarkerResource extends Resource
     {
         return $table
             ->columns([
-                //
+                Tables\Columns\TextColumn::make('name')
             ])
             ->filters([
                 //

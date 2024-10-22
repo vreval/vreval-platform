@@ -25,6 +25,8 @@ class AssetResource extends Resource
         return $form
             ->columns(1)
             ->schema([
+                Forms\Components\TextInput::make('name')
+                    ->required(),
                 Forms\Components\FileUpload::make('file')
                     ->directory('assets')
                     ->visibility('private')
@@ -42,7 +44,7 @@ class AssetResource extends Resource
     {
         return $table
             ->columns([
-                //
+                Tables\Columns\TextColumn::make('name')
             ])
             ->filters([
                 //

@@ -23,8 +23,8 @@ class Asset extends Model
         return $this->belongsTo(Project::class);
     }
 
-    public function environment(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function environments(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
-        return $this->belongsTo(Environment::class);
+        return $this->belongsToMany(Environment::class);
     }
 }
