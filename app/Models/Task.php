@@ -9,6 +9,19 @@ class Task extends Model
 {
     use HasUlids;
 
+    protected $casts = [
+        'properties' => 'array'
+    ];
+
+    protected static function boot(): void
+    {
+        parent::boot();
+
+        self::creating(function (Task $task) {
+            $task->project_id = UserSetting::currentProject();
+        });
+    }
+
     public function project(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(Project::class);

@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Scopes\UserProjectScope;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
@@ -12,7 +13,7 @@ use Illuminate\Support\Facades\Session;
 #[ScopedBy(UserProjectScope::class)]
 class Form extends Model
 {
-    use HasUlids;
+    use HasUlids, HasFactory;
 
     protected $casts = [
         'pages' => 'array'
