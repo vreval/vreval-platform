@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Models\Scopes\UserProjectScope;
+use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Model;

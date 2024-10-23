@@ -7,6 +7,7 @@ use App\Filament\Resources\TaskResource\RelationManagers;
 use App\Models\Task;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Resources\Pages\Page;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -35,6 +36,7 @@ class TaskResource extends Resource
                 ->options($records['markers']),
             Forms\Components\Select::make('environment_id')
                 ->label('Environments')
+                ->columnSpan(3)
                 ->required()
                 ->multiple()
                 ->options($records['environments'])
@@ -48,6 +50,7 @@ class TaskResource extends Resource
         $environments = \App\Models\Environment::query()->pluck('name', 'id');
 
         return $form
+            ->columns(1)
             ->schema([
                 Forms\Components\TextInput::make('name')
                     ->required(),
@@ -100,7 +103,7 @@ class TaskResource extends Resource
                             ->columns(['sm' => 3])
                             ->schema([
                                 ...self::createDefaultBlock(compact('forms', 'markers', 'environments')),
-                                Forms\Components\Repeater::make('Locations')
+                                Forms\Components\Repeater::make('Waypoints')
                                     ->columnSpan(3)
                                     ->columns(['sm' => 4])
                                     ->schema([
@@ -115,6 +118,21 @@ class TaskResource extends Resource
                                             ->required()
                                             ->options($forms),
                                         Forms\Components\Toggle::make('is_optional')
+                                    ]),
+                                Forms\Components\Repeater::make('Destination')
+                                    ->columnSpan(3)
+                                    ->columns(['sm' => 4])
+                                    ->schema([
+                                        Forms\Components\TextInput::make('name')
+                                            ->required(),
+                                        Forms\Components\Select::make('marker_id')
+                                            ->label('Marker')
+                                            ->required()
+                                            ->options($markers),
+                                        Forms\Components\Select::make('form_id')
+                                            ->label('Form')
+                                            ->required()
+                                            ->options($forms)
                                     ])
                             ]),
                     ])
@@ -129,6 +147,10 @@ class TaskResource extends Resource
             ])
             ->filters([
                 //
+            ])
+            ->headerActions([
+                Tables\Actions\Action::make('wizard')
+                    ->url(Pages\TaskWizard::getUrl())
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
@@ -153,6 +175,7 @@ class TaskResource extends Resource
             'index' => Pages\ListTasks::route('/'),
             'create' => Pages\CreateTask::route('/create'),
             'edit' => Pages\EditTask::route('/{record}/edit'),
+            'wizard' => Pages\TaskWizard::route('/wizard')
         ];
     }
 }

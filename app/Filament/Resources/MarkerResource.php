@@ -18,6 +18,8 @@ class MarkerResource extends Resource
     protected static ?string $model = Marker::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationParentItem = 'Tasks';
+    protected static ?int $navigationSort = 102;
 
     public static function form(Form $form): Form
     {
