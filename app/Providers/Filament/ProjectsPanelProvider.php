@@ -28,6 +28,9 @@ class ProjectsPanelProvider extends PanelProvider
             ->id('projects')
             ->path('projects')
             ->login()
+            ->registration()
+            ->passwordReset()
+            ->profile()
             ->colors([
                 'primary' => Color::Emerald,
             ])
