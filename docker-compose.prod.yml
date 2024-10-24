@@ -1,0 +1,26 @@
+---
+services:
+  php:
+    image: serversideup/php:8.3-fpm-nginx-alpine
+    environment:
+      PHP_POST_MAX_SIZE: "200M"
+      PHP_UPLOAD_MAX_FILE_SIZE: "200M"
+    ports:
+      - "80:8080"
+    volumes:
+      - .:/var/www/html/
+  mysql:
+    image: mariadb:latest
+    container_name: mariadb
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - db_data:/var/lib/mysql
+    env_file:
+      - ./.env
+volumes:
+  db_data:
+    driver: local
