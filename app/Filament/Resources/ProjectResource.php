@@ -24,7 +24,11 @@ class ProjectResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')
-                    ->required()
+                    ->required(),
+                Forms\Components\Select::make('members')
+                    ->relationship(name: 'users', titleAttribute: 'email')
+                    ->multiple()
+                    ->preload()
             ]);
     }
 
