@@ -49,6 +49,5 @@ jobs:
       run: |
         ssh -o StrictHostKeyChecking=no ${{ secrets.PRODUCTION_USER }}@${{ secrets.PRODUCTION_HOST }} << 'EOF'
           cd ${{ secrets.PRODUCTION_PATH }}
-          docker-compose pull your_image_name
-          docker-compose up -d --no-deps your_service_name
+          docker-compose up -f docker-compose.prod.yml -d --no-deps
         EOF
