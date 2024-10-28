@@ -24,11 +24,13 @@ class FormResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
+            ->columns(1)
             ->schema([
                 Forms\Components\TextInput::make('name')
                     ->required(),
                 Forms\Components\Textarea::make('description'),
                 Forms\Components\Repeater::make('pages')
+                    ->collapsible()
                     ->schema([
                         Forms\Components\Builder::make('fields')
                             ->blocks([

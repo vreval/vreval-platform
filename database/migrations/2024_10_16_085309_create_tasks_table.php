@@ -15,6 +15,7 @@ return new class extends Migration
             $table->ulid('id')->primary();
             $table->string('name');
             $table->text('description')->nullable();
+            $table->json('environments');
             $table->json('properties');
             $table->foreignUlid('project_id')->constrained()->cascadeOnDelete();
             $table->timestamps();

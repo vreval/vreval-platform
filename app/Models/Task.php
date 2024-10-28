@@ -13,6 +13,7 @@ class Task extends Model
     use HasUlids;
 
     protected $casts = [
+        'environments' => 'array',
         'properties' => 'array'
     ];
 

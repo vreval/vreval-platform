@@ -37,7 +37,6 @@ class TaskResource extends Resource
             Forms\Components\Select::make('environment_id')
                 ->label('Environments')
                 ->columnSpan(3)
-                ->required()
                 ->multiple()
                 ->options($records['environments'])
         ];
@@ -50,12 +49,17 @@ class TaskResource extends Resource
         $environments = \App\Models\Environment::query()->pluck('name', 'id');
 
         return $form
-            ->columns(['sm' => 1])
+            ->columns(1)
             ->schema([
                 Forms\Components\TextInput::make('name')
                     ->required(),
                 Forms\Components\Textarea::make('description'),
+                Forms\Components\Select::make('environments')
+                    ->required()
+                    ->multiple()
+                    ->options($environments),
                 Forms\Components\Builder::make('properties')
+                    ->label('Steps')
                     ->collapsible()
                     ->blocks([
                         Forms\Components\Builder\Block::make('default')
