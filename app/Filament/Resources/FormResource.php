@@ -30,6 +30,7 @@ class FormResource extends Resource
                     ->required(),
                 Forms\Components\Textarea::make('description'),
                 Forms\Components\Repeater::make('pages')
+                    ->collapsible()
                     ->schema([
                         Forms\Components\Builder::make('fields')
                             ->blocks([
